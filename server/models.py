@@ -15,7 +15,7 @@ class User(db.Model, SerializerMixin):
     image_url = db.Column(db.String)
     bio = db.Column(db.String)
 
-    recipes = db.relationship('Recipe', back_populates='user')
+    recipes = db.relationship('Recipe', backref='user')
 
     def __repr__(self):
         return f'User {self.username}, ID {self.id}'
@@ -41,8 +41,6 @@ class Recipe(db.Model, SerializerMixin):
     instructions = db.Column(db.String, nullable=False)
     minutes_to_complete = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-    user = db.relationship('User', back_populates='recipe')
 
     @validates('instructions')
     def validate_instructions(self, key, instructions):
