@@ -71,26 +71,26 @@ class RecipeIndex(Resource):
         if session['user_id']:
             data = request.get_json()
 
-            title = data.get('title'),
-            instructions = data.get('instructions'),
-            minutes_to_complete = data.get('minutes_to_complete'),
+            title = data.get('title')
+            instructions = data.get('instructions')
+            minutes_to_complete = data.get('minutes_to_complete')
             user_id = session['user_id']
-
+            
             if not title or len(instructions) < 50:
-                return {'error': 'Recipe must have a title and instructions.'}, 422
+                return {'error': 'Unprocessable Entity.'}, 422
 
             new_recipe = Recipe (
                 title = title,
                 instructions = instructions,
                 minutes_to_complete = minutes_to_complete,
-                user_id = user_id
+                user_id = user_id,
             )
 
             db.session.add(new_recipe)
-            db.session.commit()
+            db.session.commit()      
 
             return new_recipe.to_dict(), 201
-        return {}, 401
+        return {'error': 'User is nauthorized'}, 401
 
         
 
